@@ -32,7 +32,6 @@
                                     <icon class="fa-music">&nbsp; {{ item.listName }}</icon>
 
 
-
                                     <el-popconfirm
                                         confirm-button-text="是的"
                                         cancel-button-text="取消"
@@ -41,12 +40,10 @@
                                         @cancel="cancelEvent"
                                     >
                                         <template #reference>
-                                        <el-icon style="margin-right: .5rem;" v-if="deleteShow"><Delete/></el-icon>
+                                        <el-icon style="margin-right: .5rem;" v-if="ifnotmyselfnotshow(item.creator)"><Delete/></el-icon>
                                         </template>
                                     </el-popconfirm>
 
-
-                                    
                                 </p>
                                 
                             </div>
@@ -115,11 +112,7 @@
                 </el-skeleton>
             
             </div>
-
-
-
         </div>
-
     </div>
 
 </template>
@@ -146,7 +139,7 @@ const tableData = reactive([]);//歌单列表数据
 const currentPage = ref(0);//分页的当前页数
 const pageSize = ref(0);//分页的当前页数据量
 const loading=ref(true)//懒加载
-const deleteShow=ref(username=='未登录'?false:true)//歌单删除的显隐（未登录时消失）
+// const deleteShow=ref(username=='未登录'?false:true)//歌单删除的显隐（未登录时消失）
 //歌单列表数据
 let smallItem: any = ref([]);
 smallItem.value=tableData
@@ -157,6 +150,14 @@ const cancelEvent=()=>{
 console.log("取消删除！");
 
 }
+
+//歌单删除的显隐（未登录 或者 不是该用户的username 时消失）
+const ifnotmyselfnotshow=(creator:string)=>{
+    if(username=='未登录') return false;
+    if(creator!=username) return false;
+    else return true;
+}
+
 
 //确认删除函数
 const confirmEvent= (lid:any)=>{
