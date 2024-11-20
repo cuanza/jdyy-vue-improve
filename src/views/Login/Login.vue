@@ -214,10 +214,13 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 
 .Login {
-    background-image: url(@/assets/image/login-background.jpg);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-image: url(@/assets/image/login-background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
