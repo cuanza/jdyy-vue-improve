@@ -9,10 +9,10 @@
 
         <div>
             <div class="musicSheetList">
-                <h1>精选歌单</h1>
+                <h1>精 选 推 荐</h1>
                 <div class="box">
                     <div v-for="item in firstItem"  :key="item" >
-                        <img :src="`http://localhost:8080/${item.cover}`" alt="">
+                      <img :src="`/image/sound_recording/sr1.jpg`" alt="">
                         <div>
                             <p class="fa-user-plus" style="font-weight: lighter;">&nbsp;{{ item.creator }}</p>
                             <p>{{ item.listName }}</p>
@@ -20,13 +20,13 @@
                         </div>
 
                     </div>
-                            <div v-for="(item,index) in smallItem" 
-                                :item="item" 
-                                :index="index" 
+                            <div v-for="(item,index) in smallItem"
+                                :item="item"
+                                :index="index"
                                 :key="item.lid"
                             >
                                 <strong class="fa-user-plus" style="font-weight: lighter;"><span>&nbsp;{{ item.creator }}</span></strong>
-                                <img :src="`http://localhost:8080/${item.cover}`" @click='toMusicListUrl("musicList",item,item.lid)' v-if="item.cover!=null">
+                              <img :src="`/image/sound_recording/sr3.jpg`" @click='toMusicListUrl("musicList",item,item.lid)' v-if="item.cover!=null">
                                 <div v-else style="width:200px;height:200px; display: flex; justify-content: center;align-items: center; color: white;font-size: 20px;font-weight: 900;" >我是无图祖</div>
                                 <p style="display: flex; justify-content: space-between;">
                                     <icon class="fa-music">&nbsp; {{ item.listName }}</icon>
@@ -58,12 +58,12 @@
 
 
             <div class="RankingList">
-                <h1>热门榜单</h1>
-                <div class="item" 
-                        v-for="(item,index) in rankItem" 
-                        :item="item" 
-                        :index="index"  
-                        :key="item.musicId" 
+                <h1>热 榜 更 新</h1>
+                <div class="item"
+                        v-for="(item,index) in rankItem"
+                        :item="item"
+                        :index="index"
+                        :key="item.musicId"
                         @click='toMuiscUrl("musicPlay",item,item.musicId)'
                 >
                     <div class="rank">{{index+1}}</div>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
 
-                <h1>推荐音乐 
+                <h1>猜 你 喜 欢
                     <el-icon @click="ClickRefresh" class="refresh">
                         <Refresh />
                     </el-icon>
