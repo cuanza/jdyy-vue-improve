@@ -2,7 +2,7 @@
     <div class="nav">
         <div class="navLeft">
             <div class="logo">
-                LG
+                AI
             </div>
 
         </div>
