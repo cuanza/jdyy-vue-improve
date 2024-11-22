@@ -12,7 +12,7 @@
                 <h1>精 选 推 荐</h1>
                 <div class="box">
                     <div v-for="item in firstItem"  :key="item" >
-                      <img :src="`/image/sound_recording/sr1.jpg`" alt="">
+                      <img :src="`http://localhost:8080/${item.cover}`" alt="">
                         <div>
                             <p class="fa-user-plus" style="font-weight: lighter;">&nbsp;{{ item.creator }}</p>
                             <p>{{ item.listName }}</p>
@@ -26,7 +26,7 @@
                                 :key="item.lid"
                             >
                                 <strong class="fa-user-plus" style="font-weight: lighter;"><span>&nbsp;{{ item.creator }}</span></strong>
-                              <img :src="`/image/sound_recording/sr3.jpg`" @click='toMusicListUrl("musicList",item,item.lid)' v-if="item.cover!=null">
+                              <img :src="`http://localhost:8080/${item.cover}`" @click='toMusicListUrl("musicList",item,item.lid)' v-if="item.cover!=null">
                                 <div v-else style="width:200px;height:200px; display: flex; justify-content: center;align-items: center; color: white;font-size: 20px;font-weight: 900;" >我是无图祖</div>
                                 <p style="display: flex; justify-content: space-between;">
                                     <icon class="fa-music">&nbsp; {{ item.listName }}</icon>
