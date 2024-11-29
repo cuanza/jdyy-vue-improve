@@ -41,6 +41,10 @@
           <div class="message">
             <h1>{{ musicData.musicName }}</h1>
             <p style="width: max-content">{{ musicData.author }}</p>
+            <div style="margin-top: 10px">
+              <el-button type="primary" @click="openAIHelper('transcribe')">AI 课 堂 语 音 转 文 字</el-button>
+              <el-button type="success" @click="openAIHelper('notes')" >获 取 AI 课 堂 笔 记</el-button>
+            </div>
           </div>
         </div>
   
@@ -107,15 +111,17 @@
           </div>
         </div>
       </div>
-  
       <Remark :mid="mid" />
+
+      <AIHelperDialog ref="musicDialog" />
     </div>
   </template>
   <script>
   import { Howl } from "howler";
-  
+  import AIHelperDialog from "@/views/Fronts/MusicPlay/AIHelperDialog.vue";
+
   import Remark from "@/components/Remark/Remark.vue";
-  
+
   export default {
     name: "video-test",
     data() {
@@ -134,6 +140,7 @@
     },
     components: {
       Remark,
+      AIHelperDialog
       // slider
     },
     created() {
@@ -263,6 +270,10 @@
       change(e) {
         this.sound.seek((this.sound._duration * e.target.value) / 100);
         this.setTimerAndValue();
+      },
+      openAIHelper(actionType) {
+        console.log('音乐ID:', this.musicId, '功能:', actionType);
+        this.$refs.musicDialog.openDialog(this.mid, actionType);
       },
     },
     beforeDestroy() {
