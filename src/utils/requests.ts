@@ -8,7 +8,7 @@ import { getToken } from './token';
 const request = axios.create({
     // 配置对象
     baseURL: "http://localhost:8080", //基础路径，发送请求的时候，路径当中会出现api
-    timeout: 5000,   //请求超时的时间5s
+    timeout: 60000,   //请求超时的时间60s
 })
 
 // 请求拦截器：在发送请求之前，请求拦截器可以检测到，在请求发送之前处理一些事情

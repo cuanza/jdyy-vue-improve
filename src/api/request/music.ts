@@ -39,3 +39,21 @@ export const updateMusic = (
 ) => {
   return request.patch("music/modify", data, config);
 };
+
+// ai课堂笔记
+export const getNotes = (mid: number) => {
+  return request.get("ai/getNotes", {
+    params: {
+      musicId:mid
+    },
+  });
+};
+
+// ai转文字
+export const getTranscribe = (mid: number) => {
+  return request.get("ai/getTranscribe", {
+    params: {
+      musicId:mid
+    },
+  });
+};
