@@ -12,6 +12,7 @@
   <div id="list">
 
     <div class="musicList">
+      
       <div class="message">
         <div class="cover">
           <img :src="`http://localhost:8080/${form.cover}`" alt="">

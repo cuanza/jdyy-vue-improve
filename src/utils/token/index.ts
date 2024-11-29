@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 // ↓cookie 中保存 token 的键
-export const tokenKey = 'bee-token'
+export const tokenKey = 'satoken'
 
 // ↓获取token
 export const getToken = (): string | undefined => {

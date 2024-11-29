@@ -147,7 +147,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
            doLogin(JSON.stringify(ruleForm)).then((res:any)=>{
             console.log(res.code);
             if(res.code===200){
-                ElMessage.success("登录成功")
+                // ElMessage.success("登录成功")
                 // ↓保存token
                 console.log(res.data);
                 
@@ -165,9 +165,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
                 }
 
             }else if(res.code===404){
-                ElMessage.error("用户不存在")
+                // ElMessage.error("用户不存在")
             }else{
-                ElMessage.error("登录失败")
+                // ElMessage.error("用户名或密码错误")
             }
            })
         } else {

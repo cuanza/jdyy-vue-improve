@@ -5,12 +5,14 @@ import AddMusic from '@/views/backstage/components/Main/AddMusic.vue'
 import Users from '@/views/backstage/components/Main/Users.vue'
 import Music from '@/views/backstage/components/Main/Music.vue'
 import Test from '@/views/backstage/components/Main/Test.vue'
+import Info from '@/views/MusicPersonal/Children/Info.vue'
 
 import adminLogin from '@/views/Login/Login.vue'
 import Register from '@/views/Register/Register.vue'
 import MusicFrout from '@/views/Fronts/MusicFrout.vue'
 import musicPlay from '@/views/Fronts/MusicPlay/MusicPlay.vue'
 import musicList from '@/views/Fronts/MusicList/MusicList.vue'
+import musicPersonal from '@/views/MusicPersonal/MusicPersonal.vue'
 
 import NProgress from '@/utils/progress'
 import { existToken, removeToken } from '@/utils/token/index'
@@ -95,10 +97,47 @@ const router = createRouter({
             showFooter: false
          }
         },
+        //个人中心
+        {
+          path:'musicPersonal/:id',
+          name:'musicPersonal',
+          component:musicPersonal,
+          meta:{
+            showFooter: false
+          },
+          children:[
+            {
+              path: 'info/:id',
+              name:'info',
+              component: Info,
+            },
+            // {
+            //   path:'/newsuser/personal/myarticle/:id',
+            //   name:'myarticle',
+            //   component: r => require.ensure([], () => r(require('@/views/person/MyArticle')), 'myarticle')
+            // },
+            // {
+            //   path:'/newsuser/personal/mycollect/:id',
+            //   name:'mycollect',
+            //   component: r => require.ensure([], () => r(require('@/views/person/MyCollect')), 'mycollect')
+            // },
+            // {
+            //   path:'/newsuser/personal/myfan/:id',
+            //   name:'myfan',
+            //   component: r => require.ensure([], () => r(require('@/views/person/MyFanAndFollow')), 'myfan')
+            // },
+            // {
+            //   path:'/newsuser/personal/myfollow/:id',
+            //   name:'myfollow',
+            //   component: r => require.ensure([], () => r(require('@/views/person/MyFanAndFollow')), 'myfollow')
+            // }
+          ],
+          
+        },
       ],
       
     },
-
+    
     //登录
     {
       path:'/login',

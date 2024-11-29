@@ -4,7 +4,7 @@
       <el-input v-model="formLabelAlign.listName" size="large" />
     </el-form-item>
     <el-form-item label="作者">
-      <el-input v-model="formLabelAlign.creator" maxlength="10" placeholder="最多10位字符" show-word-limit type="text" aria-disabled/>
+      <el-input v-model="formLabelAlign.creator" maxlength="10" placeholder="最多10位字符" show-word-limit type="text" aria-disabled disabled/>
       <el-tag @click="clickSelect" type="success" style="cursor: pointer; margin-top: 5px;">当前用户：{{userInfoStore.username}}</el-tag>
     </el-form-item>
     <el-form-item label="封面">
