@@ -107,7 +107,7 @@ const router = createRouter({
           },
           children:[
             {
-              path: 'info/:id',
+              path: '',
               name:'info',
               component: Info,
             },

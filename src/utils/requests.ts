@@ -32,17 +32,21 @@ request.interceptors.response.use(
     //成功的回调函数
     (res) => {
         if(res.data.code==401){
+            
             ElMessage.error(res.data.message)
         }
+        
         else if(res.data.code!=200){
             ElMessage.error(res.data.msg)
             useUserInfoStore().$reset()
             removeToken()
-            // ↓用router.push或replace会缓存页面，比如由admin切换到普通用户，普通用户在没刷新页面之前仍能看到admin才有权限的页面
-            // window.location.href = '/'
+            //↓用router.push或replace会缓存页面，比如由admin切换到普通用户，普通用户在没刷新页面之前仍能看到admin才有权限的页面
+            window.location.href = '/login'
             return Promise.reject(res.data.msg)
+        }else if(res.data.msg=='注册成功'){
+            ElMessage.success(res.data.msg)
         }else{
-            ElMessage.success(res.data.message)
+            // ElMessage.success(res.data.message)
         return res.data
         }
         

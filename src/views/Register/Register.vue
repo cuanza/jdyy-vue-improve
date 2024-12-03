@@ -251,6 +251,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 .Register {
     background-image: url(@/assets/image/login-background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     height: 100vh;
     display: flex;
     justify-content: center;

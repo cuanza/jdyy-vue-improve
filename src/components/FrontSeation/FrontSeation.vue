@@ -11,11 +11,11 @@
             <div class="musicSheetList">
                 <h1>精 选 推 荐</h1>
                 <div class="box">
-                    <div v-for="item in firstItem"  :key="item" >
+                    <div v-for="item in firstItem" :key="item" @click='toMusicListUrl("musicList",item,item.lid)'>
                       <img :src="`http://localhost:8080/${item.cover}`" alt="">
                         <div>
                             <p class="fa-user-plus" style="font-weight: lighter;">&nbsp;{{ item.creator }}</p>
-                            <p>{{ item.listName }}</p>
+                            <p style="display: block;overflow:hidden;white-space: nowrap;text-overflow: ellipsis; width: 400px;height: 80px;">{{ item.listName }}</p>
                             <p>{{ item.detail }}</p>
                         </div>
 

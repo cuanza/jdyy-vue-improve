@@ -10,7 +10,12 @@ export const useUserInfoStore = defineStore('user-info', {
     username: '未登录',
     password: '',
     role:'',
-    token:''
+    token:'',
+    avatar:'',
+    age:'',
+    unit:'',
+    gender:'',
+    email:''
   }),
   persist: {
 
@@ -25,12 +30,17 @@ export const useUserInfoStore = defineStore('user-info', {
   },
   actions: {
     setAll(userinfo: any) {
-      const { uid, username, password,role,token } = userinfo
+      const { uid, username, password,role,token,avatar,age,unit,gender,email } = userinfo
       this.uid = uid
       this.username = username
       this.password = password
       this.role=role
       this.token=token
+      this.avatar=avatar
+      this.age=age
+      this.unit=unit
+      this.gender=gender
+      this.email=email
     },
   },
 })

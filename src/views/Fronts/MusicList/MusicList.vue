@@ -24,11 +24,17 @@
             <p class="createTime"> 创建时间：{{ form.createTime }}</p>
           </div>
           <div class="btn">
-            <button  @click="dialogFormVisible = true">
+            <button  @click="dialogAddFormVisible = true">
               <el-icon>
                 <Plus />
               </el-icon>
               <span>添加</span>
+            </button>
+            <button  @click="dialogModifyFormVisible = true">
+              <el-icon>
+                <Edit />
+              </el-icon>
+              <span>编辑</span>
             </button>
           </div>
           <p style="color:var(--color-white);">简介:</p>
@@ -62,15 +68,30 @@
 
 
  <!-- 添加音乐的弹出框 -->
- <el-dialog v-model="dialogFormVisible"  title="添加音乐">
+ <el-dialog v-model="dialogAddFormVisible"  title="添加列表信息">
 
     <AddMusic :ListId="listId" @dialogFormHidden="addMusicAfter"></AddMusic>
 
 <!-- <template #footer>
 <span class="dialog-footer">
-<el-button @click="dialogFormVisible = false">Cancel</el-button>
-<el-button type="primary" @click="dialogFormVisible = false">
+<el-button @click="dialogAddFormVisible = false">Cancel</el-button>
+<el-button type="primary" @click="dialogAddFormVisible = false">
   Confirm
+</el-button>
+</span>
+</template> -->
+</el-dialog>
+
+ <!-- 修改音乐的弹出框 -->
+ <el-dialog v-model="dialogModifyFormVisible"  title="修改列表信息">
+
+<AddMusic :ListId="listId" @dialogFormHidden="addMusicAfter"></AddMusic>
+
+<!-- <template #footer>
+<span class="dialog-footer">
+<el-button @click="dialogAddFormVisible = false">Cancel</el-button>
+<el-button type="primary" @click="dialogAddFormVisible = false">
+Confirm
 </el-button>
 </span>
 </template> -->
@@ -81,7 +102,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router"
-import { Plus, Delete } from '@element-plus/icons-vue'
+import { Plus, Delete,Edit } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Pagination from "@/components/Pagination.vue";
 import { ref, reactive } from "vue";
@@ -90,7 +111,8 @@ import router from '@/router/index'
 import AddMusic from '@/views/Fronts/Add/AddMusic.vue'
 
 //是否显示弹出框响应式值
-const dialogFormVisible = ref(false)
+const dialogAddFormVisible = ref(false)
+const dialogModifyFormVisible = ref(false)
 
 
 //删除的提示框显示
@@ -151,7 +173,7 @@ const getCurrentPageData=(data: any)=> {
 
 //添加音乐后的更新操作
 const addMusicAfter=(hidden:boolean)=>{
-  dialogFormVisible.value = hidden
+  dialogAddFormVisible.value = hidden
   console.log("来啦来啦！！！！");
   //重新获取数据
   getDataAgain();
@@ -418,6 +440,7 @@ console.log(form, 6);
   margin: 0 .5rem .5rem 1rem;
   display: flex;
   align-items: center;
+  gap: 10px; /* 子元素之间的间隔 */
   /* font-size: 1vw; */
 }
 
@@ -435,14 +458,14 @@ console.log(form, 6);
   font-size: 15px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  /* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
   backdrop-filter: blur(1px);
   /*-webkit-backdrop-filter: blur(1px); */
   border-radius: 10px;
   /* border: 1px solid rgba(255, 255, 255, 0.18); */
   /* 优化高斯模糊 */
   transform: translateZ(0);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  /* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
 }
 
 @media screen and (max-width:851px) {

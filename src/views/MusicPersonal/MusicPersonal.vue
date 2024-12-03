@@ -51,16 +51,19 @@
         <div class="user_num">
           <!-- 点击粉丝，跳转到粉丝页面 -->
           <div style="cursor: pointer" @click="myfan">
-            <div class="num_number">{{ fanCounts }}</div>
+            <div class="num_number">2.4w</div>
+            <!-- <div class="num_number">{{ fanCounts }}</div> -->
             <span class="num_text">粉丝</span>
           </div>
           <!-- 点击关注，跳转到关注页面 -->
           <div style="cursor: pointer" @click="myfollow">
-            <div class="num_number">{{ followCounts }}</div>
+            <div class="num_number">23</div> 
+            <!-- <div class="num_number">{{ followCounts }}</div> -->
             <span class="num_text">关注</span>
           </div>
           <div>
-            <div class="num_number">{{ goodCounts }}</div>
+            <div class="num_number">1.1w</div>
+            <!-- <div class="num_number">{{ goodCounts }}</div> -->
             <span class="num_text">获赞</span>
           </div>
         </div>
@@ -73,8 +76,8 @@
             <span class="person_body_list" style="border-bottom: none">个人中心</span>
           </div>
           <!-- 侧边菜单 -->
-          <el-menu router  style="--el-menu-active-color:#f0f0f0;" default-active="info"  class="el-menu-vertical-demo">
-            <el-menu-item index="info" :route="{ name: 'info', params: $route.params.id }">
+          <el-menu router  style="--el-menu-active-color:#f0f0f0;" :default-active="activeMenu"  class="el-menu-vertical-demo">
+            <el-menu-item index="info" :route="{ name: 'info', params: route.params.id }">
               <span slot="title">个人简介</span>
             </el-menu-item>
             <el-menu-item index="myarticle" :route="{ name: 'myarticle', params: $route.params.id }">
@@ -248,11 +251,21 @@ onMounted(load)
 watch(
   () => route.path,
   (newPath, oldPath) => {
-    if (newPath === `/musicFrout/musicPersonal/${uid}` || newPath === `/musicFrout/musicPersonal/${route.params.id}`) {
+    if (newPath == `/musicFrout/musicPersonal/${uid}` || newPath == `/musicFrout/musicPersonal/${route.params.id}`) {
       load()
     }
   }
 )
+
+onMounted(() => {
+  // 路由加载时跳转到 'info' 页面
+  router.push({ name: 'info', params: { id: route.params.id } });
+});
+
+// 计算属性：设置默认选中的菜单项
+const activeMenu = computed(() => {
+  return route.name || 'info'; // 默认选中'个人简介'
+});
 
 </script>
 
@@ -443,11 +456,15 @@ left: 35%;
 
 .user_num > div {
   text-align: center;
-  border-right: 1px dotted #999;
+  border-right: 1px dotted #ffffff;
   box-sizing: border-box;
   width: 80px;
   height: 40px;
   line-height: 20px;
+}
+
+.user_num > div:last-child {
+  border-right: 0;
 }
 
 .num_text {
@@ -456,7 +473,7 @@ left: 35%;
 
 .num_number {
   font-size: 20px;
-  color: #333;
+  color: #000000;
 }
 
 .el-menu-item>span {

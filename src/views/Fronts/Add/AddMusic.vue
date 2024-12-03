@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="top" label-width="100px" :model="formLabelAlign">
-    <el-form-item label="音乐名">
+    <el-form-item label="音频名">
       <el-input v-model="formLabelAlign.musicName" size="large" />
     </el-form-item>
     <el-form-item label="作者">
