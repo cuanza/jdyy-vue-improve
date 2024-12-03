@@ -1,10 +1,10 @@
 <template>
   <el-form label-position="top" label-width="100px" :model="formLabelAlign">
-    <el-form-item label="歌单名">
+    <el-form-item label="课堂名">
       <el-input v-model="formLabelAlign.listName" size="large" />
     </el-form-item>
     <el-form-item label="作者">
-      <el-input v-model="formLabelAlign.creator" maxlength="10" placeholder="最多10位字符" show-word-limit type="text" aria-disabled/>
+      <el-input v-model="formLabelAlign.creator" maxlength="10" placeholder="最多10位字符" show-word-limit type="text" aria-disabled disabled/>
       <el-tag @click="clickSelect" type="success" style="cursor: pointer; margin-top: 5px;">当前用户：{{userInfoStore.username}}</el-tag>
     </el-form-item>
     <el-form-item label="封面">
@@ -63,14 +63,19 @@ const isValidKey = (
 
 //获取音乐的文件放到formData里面
 const getCoverFile = (file: any) => {
-  console.log(file);
+  console.log(file,"9999999");
 
   formData.set("coverFile", file);
+
+  
 };
 // 点击el-tag进行选择该标签的值
 const clickSelect=()=>{
   formLabelAlign.creator=userInfoStore.username
 }
+
+
+
 
 const submit =() => {
   for (let key in formLabelAlign) {
@@ -78,12 +83,13 @@ const submit =() => {
       formData.set(key, formLabelAlign[key]);
     }
   }
+  
   request({
     url: "musicList/add",
     method: "PUT",
     data: formData,
   }).then((res: any) => {
-    console.log(res);
+    // console.log(res);
     //添加正常
     if (res.code == 200) {
       ElMessage.success({
@@ -94,12 +100,13 @@ const submit =() => {
      // props.sendMitt();//父组件froutHeader发送给frontSeation的信息
      location.reload()
     } else {
+      console.log(res);
       ElMessage.warning({
         message: res.message,
         grouping: true,
       });
     }
-  });
+  })
 };
 
 

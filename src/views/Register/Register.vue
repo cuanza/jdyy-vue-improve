@@ -2,8 +2,17 @@
     <div class="Register">
         <card>
             <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="0px" class="demo-ruleForm">
+
+                <el-form-item label="头像">
+                    <Upload
+                        @get-file="getAvatarFile"
+                        is-img
+                        is-cropper
+                        ref="uploadImgRef"
+                    ></Upload>
+                </el-form-item>
                 <!-- 用户名 -->
-                <el-form-item prop="userName">
+                <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" class="w-50 m-3" size="large" placeholder="用户名">
                         <template #prefix>
                             <el-icon class="el-input__icon">
@@ -14,24 +23,24 @@
                 </el-form-item>
 
                 
-                <!-- 昵称 -->
-                <!-- <el-form-item prop="nickName">
+                <!-- 手机号 -->
+                <el-form-item prop="mobile">
                     <el-input
-                        v-model="ruleForm.nickName"
+                        v-model="ruleForm.mobile"
                         class="w-50 m-3"
                         size="large"
-                        placeholder="昵称"
+                        placeholder="手机号"
                     >
                         <template #prefix>
                             <el-icon class="el-input__icon">
-                                <Postcard />
+                                <Phone />
                             </el-icon>
                         </template>
                     </el-input>
-                </el-form-item> -->
+                </el-form-item>
 
                 <!-- 邮箱 -->
-                <!-- <el-form-item prop="email">
+                <el-form-item prop="email">
                     <el-input
                         v-model="ruleForm.email"
                         class="w-50 m-3"
@@ -45,7 +54,7 @@
                             </el-icon>
                         </template>
                     </el-input>
-                </el-form-item> -->
+                </el-form-item>
 
                 <!-- 密码 -->
                 <el-form-item prop="password">
@@ -71,6 +80,13 @@
                     </el-input>
                 </el-form-item>
 
+                <el-form-item prop="gender">
+                    <el-radio-group v-model="ruleForm.gender">
+                        <el-radio border label="1">男</el-radio>
+                        <el-radio border label="0">女</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+
                 <!-- 注册按钮 -->
                 <el-form-item>
                     <el-button color="#1890ff" style="color: white" class="register-button"
@@ -87,21 +103,67 @@
 </template>
 
 <script setup lang="ts">
+
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import card from "@/components/Card/Card.vue";
-import { User, Lock } from "@element-plus/icons-vue";
+import { User, Lock, Promotion,Phone } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { doRegister } from '@/api/register';
-
+import Upload from "@/components/Upload";
 
 const ruleFormRef = ref<FormInstance>()
-
+const formData = new FormData();
 const ruleForm = reactive({
     username: '',
     password: '',
-    ensurePassword: ''
+    ensurePassword: '',
+    email:'',
+    mobile:'',
+    gender:'',
 })
+
+const uploadImgRef = ref();
+console.log(uploadImgRef.value,"@@@@@2");
+
+//获取photo放到formData里面
+const getAvatarFile = (file: any) => {
+  console.log(file,"@@@@1");
+
+  formData.set("avatarFile", file);
+};
+
+// //解决 'for in' 遍历，获取值时 ts报错问题
+const isValidKey = (
+  key: string | number | symbol,
+  object: object
+): key is keyof typeof object => {
+  return key in object;
+};
+
+
+//手机号验证
+const validateMobile = (rule: any, value: string, callback: (error?: Error) => void) => {
+  console.log(value, '')
+  if (value === '') {
+    callback(new Error('请输入手机号'));
+  } else if (!/^1(3|4|5|6|7|8|9)[0-9]\d{8}$/.test(value)) {
+    callback(new Error('请输入正确的手机号'));
+  } else {
+    callback();
+  }
+};
+//邮箱验证
+
+const validateEmail = (rule: any, value: string, callback: (error?: Error) => void) => {
+  if (value === '') {
+    callback(new Error('请输入邮箱'));
+  } else if (!/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(value)) {
+    callback(new Error('请输入正确的邮箱'));
+  } else {
+    callback();
+  }
+};
 
 const rules = reactive({
     username: [
@@ -109,39 +171,65 @@ const rules = reactive({
             required: true,
             message: "用户名不能为空",
             trigger: 'blur'
+        },
+        {
+            min: 6,
+            max: 10,
+            message: '长度在 6 到 10 个字符',
+            trigger: 'blur'
         }
-
     ],
     password: [{ required: true, message: "密码不能为空", trigger: 'blur' }],
     ensurePassword: [{ required: true, message: "确认密码不能为空", trigger: 'blur' }],
+    email:[{ validator: validateEmail, trigger: 'blur' }],
+    mobile:[{ validator: validateMobile, trigger: 'blur' }],
+    gender:[{
+      required: true,
+      message: '请选择你的性别！',
+      trigger: 'change',
+    }]
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
+
     if (!formEl) return
+
+    for (let key in ruleForm) {
+    if (isValidKey(key, ruleForm)) {
+      formData.set(key, ruleForm[key]);
+    }
+  }
+
     formEl.validate((valid) => {
 
-
+        
         if (valid) {
-            doRegister(JSON.stringify(ruleForm)).then(res => {
+            console.log(formData,"@@@@@");
+            
+            doRegister(formData).then(res => {
                 console.log(res, ruleForm);
-                if (ruleForm.password !== ruleForm.ensurePassword) {
-                    ElMessage.error("第一次与第二次输入的密码不一致")
-                    return false;
-                }else if (res.code === 200) {
+                // if (ruleForm.password !== ruleForm.ensurePassword) {
+                //     ElMessage.error("第一次与第二次输入的密码不一致")
+                //     return false;
+                // }
+                if (res.code === 200) {
                     ElMessage.success("注册成功！！！")
                 } else {
                     ElMessage.error(res.message)
                     return false;
                 }
             })
-
-
+                console.log(ruleForm,"0000000");
+                
+                console.log("cg");
+                
         } else {
             ElMessage.error("输入框信息不能为空")
             return false
         }
     })
 }
+
 
 </script>
 
@@ -163,6 +251,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 .Register {
     background-image: url(@/assets/image/login-background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     height: 100vh;
     display: flex;
     justify-content: center;

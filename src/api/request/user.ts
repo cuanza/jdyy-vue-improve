@@ -14,6 +14,15 @@ export const add = (data: addUserRequest, config?: AxiosRequestConfig) => {
   return request.put("user/add", data, config);
 };
 
+//根据id查询用户信息
+export const getUserInfoById = (uid: string) => {
+  return request.get("user/getUserById", {
+    params: {
+        uid
+    },
+  });
+};
+
 //删除用户
 const deleteUser = (uid: number) => {
   return request.delete("user/remove", {

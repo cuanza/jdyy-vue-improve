@@ -2,13 +2,15 @@
     <div class="nav">
         <div class="navLeft">
             <div class="logo">
-                LG
+                AI
             </div>
 
         </div>
-        <div class="navRight">
-            <el-dropdown v-if="!loginButton">
-                <span class="el-dropdown-link">
+        <div class="navRight" >
+            <div v-if="!loginButton">
+                <el-avatar shape="circle" :size="30" :src="`http://localhost:8080/${avatar}`" />
+                <el-dropdown >
+                <span class="el-dropdown-link" style="display: block; display: flex; align-items: center;">
                   欢迎您，<span>{{username}}</span>
                     <el-icon class="el-icon--right">
                         <arrow-down />
@@ -16,25 +18,27 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="dialogFormVisible = true">添加歌单</el-dropdown-item>
-                        <el-dropdown-item divided>个人信息</el-dropdown-item>
+                        <el-dropdown-item @click="dialogFormVisible = true">添加课堂</el-dropdown-item>
+                        <el-dropdown-item @click='toPersonalUrl("musicPersonal")' divided>个人信息</el-dropdown-item>
                         <el-dropdown-item divided @click="signout">注销</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
+            </div>
+            
             <!-- <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span> -->
             <button v-if="loginButton">
                 <router-link to="/login">登录</router-link>
             </button>
-
         </div>
+        
         <div class="view"></div>
     </div>
 
     
 
     <!-- 添加歌单的弹出框 -->
-    <el-dialog v-model="dialogFormVisible" title="添加歌单">
+    <el-dialog v-model="dialogFormVisible" title="添加课堂">
 
         <AddList :sendMitt="sendMitt"></AddList>
       
@@ -53,12 +57,17 @@
 import { ArrowDown } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import AddList from '@/views/Fronts/Add/AddList.vue'
-
-
+import { dologout } from '@/api/login';
+import { ElMessage } from "element-plus";
 import { useUserInfoStore } from '@/stores/user-info'
 import { removeToken } from '@/utils/token/index'
 import emitter from '@/utils/bus/bus'
+import router from '@/router/index'
 
+//用户id
+const uid=useUserInfoStore().uid
+//用户头像地址
+const avatar=useUserInfoStore().avatar
 
 
 //发送信息给兄弟frontSeation组件
@@ -74,17 +83,54 @@ const dialogFormVisible = ref(false)
 
 const username = useUserInfoStore().username
 
+
+
+
+//点击个人信息页面
+const toPersonalUrl=(url: string)=> {
+    // let obj = JSON.stringify(data)
+    console.log(uid);
+
+    router.push(
+        {
+            name: url,
+            params: {
+                id:uid,
+            }
+        }
+    )
+ 
+}
+
+
 const loginButton = ref(username=='未登录')
 
     // ↓登出
     const signout = () => {
-      // ↓将store重置为初始值
-      useUserInfoStore().$reset()
-      // ↓删除token
-      removeToken()
-      // ↓用router.push或replace会缓存页面，比如由admin切换到普通用户，普通用户在没刷新页面之前仍能看到admin才有权限的页面
-      window.location.href = '/'
-      // router.push('/login')
+
+      // ↓登出
+      dologout().then((res: any) => {
+        console.log(res);
+        if (res.code === 200) {
+          ElMessage.success('登出成功')
+           // ↓将store重置为初始值
+            useUserInfoStore().$reset()
+            // ↓删除token
+            removeToken()
+            // ↓用router.push或replace会缓存页面，比如由admin切换到普通用户，普通用户在没刷新页面之前仍能看到admin才有权限的页面
+            window.location.href = '/'
+            // router.push('/login')
+        } else {
+          ElMessage.error('登出失败')
+          // ↓将store重置为初始值
+            useUserInfoStore().$reset()
+            // ↓删除token
+            removeToken()
+
+            window.location.href = '/'
+        }
+      })
+     
     }
 
 
@@ -129,6 +175,20 @@ const loginButton = ref(username=='未登录')
     justify-content: center;
     align-items: center;
     /* border: 1px solid; */
+}
+
+.nav .navRight div:first-child {
+    /* border: 1px solid #ffffff; */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.nav .navRight div:first-child el-dropdown{
+    
+   
+
 }
 
 /* 登录按钮 */
